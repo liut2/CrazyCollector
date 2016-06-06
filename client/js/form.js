@@ -1,55 +1,11 @@
 Session.setDefault("tagSession", []);
 Session.setDefault("companySession", []);
-Session.setDefault("relatedSession", []);
 Session.setDefault("srcIDSession", "");
 
 Template.postform.events({
 	"click input[name=group1]": function(event, template){
 		var srcId = template.find(event.target).id;
 		Session.set("srcIDSession", srcId);
-	}
-});
-
-
-Template.related.helpers({
-	settings: function() {
-	    return {
-	      position: "top",
-	      limit: 5,
-	      rules: [
-	        {
-	          collection: Tags,
-	          field: "tagname",
-	          template: Template.relatedlist
-	        }
-	      ]
-	    };
-  	},
-	relatedList: function(){
-		return Session.get("relatedSession");
-	}
-});
-
-Template.related.events({
-	"keypress #related": function(event, template){
-		if (event.which == 13) {
-			var relatedlist = Session.get("relatedSession");
-			var question = template.find("#related").value.trim();
-			relatedlist.push(question);
-			Session.set("relatedSession", relatedlist);
-			console.log(relatedlist);
-		}
-	},
-	"click .material-icons": function(e, t) {
-		var name = e.target.parentNode.childNodes[0].textContent;
-		var relatedlist = Session.get("relatedSession");
-		var i = relatedlist.indexOf(name);
-		console.log(typeof name);
-		if(i != -1) {
-			relatedlist.splice(i, 1);
-		}
-		Session.set("relatedSession", relatedlist);
-		console.log(relatedlist);
 	}
 });
 
@@ -80,8 +36,8 @@ Template.companies.helpers({
 	      limit: 5,
 	      rules: [
 	        {
-	          collection: Tags,
-	          field: "tagname",
+	          collection: Companies,
+	          field: "companyname",
 	          template: Template.companylist
 	        }
 	      ]
@@ -99,6 +55,7 @@ Template.companies.events({
 			var company = template.find("#companies").value.trim();
 			companylist.push(company);
 			Session.set("companySession", companylist);
+			template.find("#companies").value = "";
 		}
 	},
 	"click .material-icons": function(e, t) {
@@ -122,6 +79,7 @@ Template.tags.events({
 			taglist.push(tag);
 			console.log(taglist);
 			Session.set("tagSession", taglist);
+			template.find("#tags").value = "";
 		}
 	},
 	"click .material-icons": function(e, t) {
