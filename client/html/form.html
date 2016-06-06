@@ -5,7 +5,7 @@
             <label for="question_name">Question Name</label>
         </div>
     </div>
-	<div class="row" style="margin-left: 10px; margin-bottom:-10px;">
+	<div class="row" style="margin-left: 10px; margin-bottom:-10px;" id="src_id">
 		<input name="group1" type="radio" id="yimudi" />
       	<label for="yimudi">一亩三分地</label>
 
@@ -39,8 +39,33 @@
 	<div class="row">
 		{{ > tags}}
 	</div>
+	<div class="row">
+		{{ > companies}}
+	</div>
+	<div class="row">
+		{{ > related}}
+	</div>
 </template>
 
+<template name="related">
+	{{> inputAutocomplete settings=settings id="related" placeholder="Related Questions...(type and press enter key)"}}
+	{{#each relatedList}}
+	 <div class="chip">{{this}}<i class="material-icons">close</i></div>
+	{{/each}}
+</template>
+<template name="relatedlist">
+	{{tagname}}
+</template>
+
+<template name="companies">
+	{{> inputAutocomplete settings=settings id="companies" placeholder="Companies...(type and press enter key)"}}
+	{{#each companyList}}
+	 <div class="chip">{{this}}<i class="material-icons">close</i></div>
+	{{/each}}
+</template>
+<template name="companylist">
+	{{tagname}}
+</template>
 
 <template name="tags">
 	{{> inputAutocomplete settings=settings id="tags" placeholder="Categories...(type and press enter key)"}}
