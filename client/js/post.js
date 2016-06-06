@@ -14,6 +14,10 @@ Template.post.events({
 		var editor = ace.edit("archy");
 		var file = editor.getValue();
 		//insert into Questions collection
+		if (questionName == "" || srcID == "" || taglist.length == 0) {
+			alert("Are you sure you want submit?");
+			return;
+		}
 		var qid = Questions.insert({
 			questionName: questionName,
 			srcID: srcID,
@@ -82,5 +86,7 @@ Template.post.events({
 		Session.set("srcIDSession", "");
 		template.find("#question_name").value = "";
 		template.find("#source_url").value = "";
+		Materialize.toast('You have successfully submitted your question.', 2000);
+		Router.go("main");
 	}
 });
