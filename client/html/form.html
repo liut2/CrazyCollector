@@ -1,0 +1,53 @@
+<template name="postform">
+	<div class="row">
+        <div class="input-field col s12">
+			<input id="question_name" type="text" class="validate">
+            <label for="question_name">Question Name</label>
+        </div>
+    </div>
+	<div class="row" style="margin-left: 10px; margin-bottom:-10px;">
+		<input name="group1" type="radio" id="yimudi" />
+      	<label for="yimudi">一亩三分地</label>
+
+		<input name="group1" type="radio" id="careercup" />
+      	<label for="careercup">CareerCup</label>
+
+		<input name="group1" type="radio" id="jisuanke" />
+      	<label for="jisuanke">计蒜客</label>
+
+		<input name="group1" type="radio" id="acm" />
+      	<label for="acm">ACM</label>
+
+		<input name="group1" type="radio" id="leetcode" />
+      	<label for="leetcode">Leetcode</label>
+
+		<input name="group1" type="radio" id="lintcode" />
+      	<label for="lintcode">Lintcode</label>
+
+		<input name="group1" type="radio" id="geeks" />
+      	<label for="geeks">Geeks</label>
+
+		<input name="group1" type="radio" id="others" />
+      	<label for="others">Others</label>
+	</div>
+	<div class="row">
+        <div class="input-field col s12">
+			<input id="source_url" type="text" class="validate">
+            <label for="source_url">Source URL</label>
+        </div>
+    </div>
+	<div class="row">
+		{{ > tags}}
+	</div>
+</template>
+
+
+<template name="tags">
+	{{> inputAutocomplete settings=settings id="tags" placeholder="Categories...(type and press enter key)"}}
+	{{#each tagList}}
+	 <div class="chip">{{this}}<i class="material-icons">close</i></div>
+	{{/each}}
+</template>
+<template name="taglist">
+	{{tagname}}
+</template>
