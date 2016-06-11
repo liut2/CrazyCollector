@@ -1,4 +1,10 @@
 /*
+tagID: tagID,
+tagname: tagname,
+file: file
+*/
+Tutorials = new Meteor.Collection("tutorials");
+/*
 tagname: tagname,
 questionlist: questionlist
 */

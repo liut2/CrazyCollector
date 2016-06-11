@@ -34,9 +34,15 @@ Template.post.events({
 				console.log("should only enter once.");
 				var questionlist = [];
 				questionlist.push(qid);
-				Tags.insert({
+				var tagId = Tags.insert({
 					tagname: taglist[i],
 					questionlist: questionlist
+				});
+				//if the question is the first in its tag, then we also create the tutorial
+				Tutorials.insert({
+					tagname: taglist[i],
+					tagId: tagId,
+					file: "//this is a tutorial"
 				});
 			}else {
 				var questionlist = tagObj.questionlist;

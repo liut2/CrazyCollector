@@ -47,6 +47,12 @@ Template.specview.helpers({
 	},
 	"questionName" : function(){
 		return Questions.findOne({_id: this.toString()}).questionName;
+	},
+	"isTags": function(){
+		var path = Iron.Location.get().path;
+		var split = path.split("/");
+		var filter = split[1];
+		return filter === "tags";
 	}
 });
 
@@ -59,15 +65,25 @@ Template.specview.events({
 		}
 		//add to new one
 		var curNode = event.target;
+		var content = curNode.textContent;
 		curNode.setAttribute("id", "act");
-		Session.set("qidSelected", this.toString());
-		//reload editor content
-		var qid = Session.get("qidSelected");
-		console.log("qid is "+qid);
-		var file = Questions.findOne({"_id" : qid}).file;
-		var editor = ace.edit("viewarchy");
-		editor.setValue("");
-		editor.insert(file);
+		if (content === "Tutorial") {
+			var path = Iron.Location.get().path;
+			var split = path.split("/");
+			var tagId = split[2];
+			var file = Tutorials.findOne({"tagId" : tagId}).file;
+			var editor = ace.edit("viewarchy");
+			editor.setValue("");
+			editor.insert(file);
+		} else {
+			Session.set("qidSelected", this.toString());
+			//reload editor content
+			var qid = Session.get("qidSelected");
+			var file = Questions.findOne({"_id" : qid}).file;
+			var editor = ace.edit("viewarchy");
+			editor.setValue("");
+			editor.insert(file);
+		}
 	}
 });
 

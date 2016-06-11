@@ -4,6 +4,9 @@
 		<div class="col s4">
 			<p class="bread">{{filter}} &nbsp;> &nbsp;{{name}}</p>
 			<div class="collection generallist">
+				{{#if isTags}}
+				<a href="#" class="collection-item" style="color:#e57373;" id="act">Tutorial</a>
+				{{/if}}
 				{{#each questionlist}}
 				<a href="#" class="collection-item" style="color:#e57373;">{{questionName}}</a>
 				{{/each}}
