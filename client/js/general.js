@@ -1,4 +1,4 @@
-var array = ["Today", "Last Three Days" ,"Last Week", "Last Two Weeks", "Last Month"];
+var array = ["Today", "Last Three Days", "Last Week", "Last Two Weeks", "Last Month"];
 Template.TagsDynamicTemplate.helpers({
 	"tags" : function() {
 		return Tags.find();

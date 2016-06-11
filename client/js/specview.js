@@ -1,4 +1,4 @@
-var array = ["Today", "Last Three Days" ,"Last Week", "Last Two Weeks", "Last Month"];
+var array = ["Today", "Last Three Days", "Last Week", "Last Two Weeks", "Last Month"];
 Session.setDefault("qidSelected", null);
 
 Template.specview.helpers({
@@ -40,7 +40,52 @@ Template.specview.helpers({
 			case "sources":
 				return SourceIDs.findOne({"_id" : id}).questionlist;
 			case "dates":
-				return [];
+				var date;
+				if (id === "0") {
+					//then it's today
+					date = new Date();
+					date.setHours(0);
+					date.setMinutes(0);
+					date.setSeconds(0);
+
+				} else if (id === "1") {
+					date = new Date();
+					date = date - 1000 * 60 * 60 * 24 * 3;   // current date's milliseconds - 1,000 ms * 60 s * 60 mins * 24 hrs * (# of days beyond one to go back)
+					date = new Date(date);
+					date.setHours(0);
+					date.setMinutes(0);
+					date.setSeconds(0);
+
+				} else if (id === "2") {
+					date = new Date();
+					date = date - 1000 * 60 * 60 * 24 * 7;   // current date's milliseconds - 1,000 ms * 60 s * 60 mins * 24 hrs * (# of days beyond one to go back)
+					date = new Date(date);
+					date.setHours(0);
+					date.setMinutes(0);
+					date.setSeconds(0);
+				} else if (id === "3") {
+					date = new Date();
+					date = date - 1000 * 60 * 60 * 24 * 14;   // current date's milliseconds - 1,000 ms * 60 s * 60 mins * 24 hrs * (# of days beyond one to go back)
+					date = new Date(date);
+					date.setHours(0);
+					date.setMinutes(0);
+					date.setSeconds(0);
+				} else if (id === "4") {
+					date = new Date();
+					date = date - 1000 * 60 * 60 * 24 * 30;   // current date's milliseconds - 1,000 ms * 60 s * 60 mins * 24 hrs * (# of days beyond one to go back)
+					date = new Date(date);
+					date.setHours(0);
+					date.setMinutes(0);
+					date.setSeconds(0);
+				}
+				var result = [];
+				var cursor = Questions.find({date: {$gte: date}}, {sort: {date: -1}});
+				console.log(cursor.count());
+				cursor.forEach(function(doc){
+					console.log(doc._id);
+					result.push(doc._id);
+				});
+				return result;
 			default:
 				break;
 		}
