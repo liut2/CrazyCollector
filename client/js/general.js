@@ -1,3 +1,4 @@
+var array = ["Today", "Last Three Days" ,"Last Week", "Last Two Weeks", "Last Month"];
 Template.TagsDynamicTemplate.helpers({
 	"tags" : function() {
 		return Tags.find();
@@ -39,8 +40,11 @@ Template.SourcesDynamicTemplate.helpers({
 
 Template.DatesDynamicTemplate.helpers({
 	"tags" : function() {
-		var array = ["Today", "Last Three Days" ,"Last Week", "Last Two Weeks", "Last Month"];
 		return array;
+	},
+	"index" : function(){
+		var name = this.toString();
+		return array.indexOf(name);
 	}
 });
 

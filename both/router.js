@@ -12,8 +12,18 @@ Router.route("/", {
     template : "main"
 });
 
-Router.route('/tags/<tagname>', {
-    data: function(){
-        console.log("This is a tags page.");
-    }
+Router.route('/tags/:_id', {
+	template: "specview"
+});
+
+Router.route('/companies/:_id', {
+	template: "specview"
+});
+
+Router.route('/sources/:_id', {
+	template: "specview"
+});
+
+Router.route('/dates/:int', {
+	template: "specview"
 });
