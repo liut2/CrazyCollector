@@ -11,3 +11,9 @@ Router.route("/", {
     name : "main",
     template : "main"
 });
+
+Router.route('/tags/<tagname>', {
+    data: function(){
+        console.log("This is a tags page.");
+    }
+});

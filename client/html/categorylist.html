@@ -1,0 +1,21 @@
+<template name="categorylist">
+	<div class="row">
+		<div class="col s2">
+			{{ > sortby }}
+		</div>
+		<div class="col s10">
+			{{> UI.dynamic template=dynamictemplate}}
+		</div>
+	</div>
+</template>
+
+<template name="sortby">
+	<div class="collection" id="filterby">
+		<h5 class="collection-header" style="padding-left:18px;color:#e57373">Filter by</h5>
+		<li class="divider"></li>
+		<a href="#!" class="collection-item filter-item" style="color:#e57373;" id="act">Tags</a>
+		<a href="#!" class="collection-item filter-item" style="color:#e57373;">Companies</a>
+		<a href="#!" class="collection-item filter-item" style="color:#e57373;">Sources</a>
+		<a href="#!" class="collection-item filter-item" style="color:#e57373;">Dates</a>
+      </div>
+</template>
