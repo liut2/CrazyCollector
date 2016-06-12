@@ -1,0 +1,8 @@
+{
+  "galaxy.meteor.com": {
+     "env": {
+       "ROOT_URL": "http://www.techsphere.xyz",
+       "MONGO_URL": "mongodb://liut2:shawnparker0924@ds013414.mlab.com:13414/crazystuff"
+     }
+   }
+}
