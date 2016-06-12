@@ -247,6 +247,7 @@ Template.specview.events({
 		Session.set("tagSession", []);
 		Session.set("companySession", []);
 		Session.set("ifEditMode", false);
+		Materialize.toast('Change has been saved', 2000);
 	}
 });
 
