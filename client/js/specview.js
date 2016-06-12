@@ -1,5 +1,6 @@
 var array = ["Today", "Last Three Days", "Last Week", "Last Two Weeks", "Last Month"];
 Session.setDefault("qidSelected", null);
+Session.setDefault("ifEditMode", false);
 
 Template.specview.helpers({
 	"filter" : function(){
@@ -98,6 +99,35 @@ Template.specview.helpers({
 		var split = path.split("/");
 		var filter = split[1];
 		return filter === "tags";
+	},
+	"notEditMode" : function(){
+		return !Session.get("ifEditMode");
+	},
+	"alreadyTags" : function(){
+		var active = document.getElementById("act");
+		if (active != null) {
+			var content = active.textContent;
+			if (content === "Tutorial") {
+				return [];
+			} else {
+				var taglist = Questions.findOne({"questionName": content}).taglist;
+				return taglist;
+			}
+		}
+		return [];
+	},
+	"alreadyCompanies" : function(){
+		var active = document.getElementById("act");
+		if (active != null) {
+			var content = active.textContent;
+			if (content === "Tutorial") {
+				return [];
+			} else {
+				var taglist = Questions.findOne({"questionName": content}).companylist;
+				return taglist;
+			}
+		}
+		return [];
 	}
 });
 
@@ -117,6 +147,7 @@ Template.specview.events({
 			var split = path.split("/");
 			var tagId = split[2];
 			var file = Tutorials.findOne({"tagId" : tagId}).file;
+			console.log("clicked tutorial");
 			var editor = ace.edit("viewarchy");
 			editor.setValue("");
 			editor.insert(file);
@@ -129,6 +160,93 @@ Template.specview.events({
 			editor.setValue("");
 			editor.insert(file);
 		}
+	},
+	"click #editButton": function(e, t){
+		Session.set("ifEditMode", true);
+	},
+	"click #abortButton": function(e, t){
+		Session.set("ifEditMode", false);
+	},
+	"click #saveButton" : function(e, t) {
+		var active = document.getElementById("act");
+		if (active != null) {
+			var content = active.textContent;
+			if (content === "Tutorial") {
+				//do sth with Tutorials collection
+				var editor = ace.edit("viewarchy");
+				var file = editor.getValue();
+				//upsert into Tutorials collection
+				var path = Iron.Location.get().path;
+				var split = path.split("/");
+				var tagId = split[2];
+				var id = Tutorials.findOne({"tagId" : tagId})._id;
+				Tutorials.update({_id:id}, {$set:{
+					file: file
+				}});
+			}else {
+				//do sth with Questions collection
+				var editor = ace.edit("viewarchy");
+				var file = editor.getValue();
+				var addedTags = Session.get("tagSession");
+				var addedCompanies = Session.get("companySession");
+				//upsert into Questions collection
+				var obj = Questions.findOne({"questionName": content});
+				var id = obj._id;
+				var originTags = obj.taglist;
+				//update taglist
+				var i;
+				for (i = 0; i < addedTags.length; i++) {
+					originTags.push(addedTags[i]);
+					//also create new tags if needed
+					var query = Tags.findOne({"tagname" : addedTags[i]});
+					if (query == null) {
+						var tagId = Tags.insert({
+							"tagname" : addedTags[i],
+							"questionlist" : [id]
+						});
+						Tutorials.insert({
+							tagname: addedTags[i],
+							tagId: tagId,
+							file: "//this is a tutorial"
+						});
+					} else {
+						var query_id = query._id;
+						var questionlist = query.questionlist;
+						questionlist.push(id);
+						Tags.update({_id:query_id}, {$set:{
+							"questionlist": questionlist
+						}});
+					}
+				}
+				var originCompanies = obj.companylist;
+				for (i = 0; i < addedCompanies.length; i++) {
+					originCompanies.push(addedCompanies[i]);
+					//create new company tag if needed
+					var company_query = Companies.findOne({"companyname" : addedCompanies[i]});
+					if (company_query == null) {
+						Companies.insert({
+							"companyname" : addedCompanies[i],
+							"questionlist" : [id]
+						});
+					} else {
+						var company_query_id = company_query._id;
+						var questionlist = company_query.questionlist;
+						questionlist.push(id);
+						Companies.update({_id:company_query_id}, {$set:{
+							"questionlist": questionlist
+						}});
+					}
+				}
+				Questions.update({_id:id}, {$set:{
+					file: file,
+					taglist: originTags,
+					companylist: originCompanies
+				}});
+			}
+		}
+		Session.set("tagSession", []);
+		Session.set("companySession", []);
+		Session.set("ifEditMode", false);
 	}
 });
 
